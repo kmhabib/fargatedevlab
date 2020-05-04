@@ -18,7 +18,7 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
 
 * Log in to the [AWS console](https://aws.amazon.com/console/) with **admin** privileges. And ensure that you are in the region that supports EKS Fargate.
     * AWS Fargate with Amazon EKS is currently only available in the following Regions: **us-east-1**, **us-east-2**, **us-west-2**, **ap-northeast-1**, **eu-west-1** , **eu-west-1**,  **ap-southeast-2**, **ap-southeast-1**, . Pods running on Fargate are supported on EKS clusters beginning with Kubernetes version 1.14 and platform version eks.5. For this lab, we’ll pick **ap-southeast-2**
-* Go to **Services → [Cloud9](https://ap-southeast-2.console.aws.amazon.com/cloud9/home?region=ap-southeast-2) **
+* Go to Services → [Cloud9](https://ap-southeast-2.console.aws.amazon.com/cloud9/home?region=ap-southeast-2)
 * Create Environment 
 * Name: **EKS Fargate Dev Lab**
 * choose an instance size. If you want to use the free tier VM, like t2.micro, you can use it but setup might become too slow. **You can use T3.small**. Recommend instance size: **Other Instance Type**s → **T3.large or you can use T3.small**
