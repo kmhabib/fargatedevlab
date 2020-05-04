@@ -82,7 +82,7 @@ sudo chmod +x /usr/local/bin/kubectl```
     * Run this command to verify if AWS Fargate with Amazon EKS is available in the Region you choose to deploy your Amazon EKS cluster.
 
 ```
-if [ $AWS_REGION = "us-east-1" ] || [ $AWS_REGION = "us-east-2" ] || [ $AWS_REGION = "ap-northeast-1" ] || [ $AWS_REGION = "eu-west-1" ] ; then
+if [ $AWS_REGION = "us-east-1" ] || [ $AWS_REGION = "us-east-2" ] || [ $AWS_REGION = "ap-northeast-1" ] || [ $AWS_REGION = "eu-west-1" ] || [ $AWS_REGION = "ap-southeast-2"] ; then
   echo -e "\033[0;32mAWS Fargate with Amazon EKS is available in your Region."
   echo "You can continue this lab."
 else
