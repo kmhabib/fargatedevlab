@@ -17,22 +17,22 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
 ### Setup Cloud 9 for eks cluster launch:
 
 * Log in to the [AWS console](https://aws.amazon.com/console/) with **admin** privileges. And ensure that you are in the region that supports EKS Fargate.
-    * AWS Fargate with Amazon EKS is currently only available in the following Regions: **us-east-1**, **us-east-2**, **us-west-2**, **ap-northeast-1**, **eu-west-1** , **eu-west-1**,  **ap-southeast-2**, **ap-southeast-1**, . Pods running on Fargate are supported on EKS clusters beginning with Kubernetes version 1.14 and platform version eks.5. For this lab, we’ll pick **eu-west-1**
-* Go to **Services → Cloud9 **
+    * AWS Fargate with Amazon EKS is currently only available in the following Regions: **us-east-1**, **us-east-2**, **us-west-2**, **ap-northeast-1**, **eu-west-1** , **eu-west-1**,  **ap-southeast-2**, **ap-southeast-1**, . Pods running on Fargate are supported on EKS clusters beginning with Kubernetes version 1.14 and platform version eks.5. For this lab, we’ll pick **ap-southeast-2**
+* Go to **Services → [Cloud9](https://ap-southeast-2.console.aws.amazon.com/cloud9/home?region=ap-southeast-2) **
 * Create Environment 
 * Name: **EKS Fargate Dev Lab**
 * choose an instance size. If you want to use the free tier VM, like t2.micro, you can use it but setup might become too slow. **You can use T3.small**. Recommend instance size: **Other Instance Type**s → **T3.large or you can use T3.small**
 * Leave everything default and press “**Next Step**”
 * Click on “**Create Environment**”
 * Once Cloud9 has spun up you can close the welcome window and other terminal windows you see in the pane and launch a new terminal by going to **Window** → **New Terminal**
-* [Image: image.png]
+* ![fig2.png](fig2.png)
 * *Note: If you like this theme, you can choose it yourself by selecting View / Themes / Solarized / Solarized Dark in the Cloud9 workspace menu.*
 * Next, we’ll be turning off temporary AWS credentials because we don’t want to use the Cloud9 credentials to launch the EKS Fargate cluster. We’ll be using an “admin” role assigned to the Cloud9 EC2 instances to configure the cluster.
     * click the gear icon (in top right corner), or click to open a new tab and choose “Open Preferences”
     * Select **AWS SETTINGS**
     * Turn off **AWS managed temporary credentials**
     * Close the **Preferences** tab
-    * [Image: image.png]
+    * ![fig3.png](fig3.png)
     * To ensure temporary credentials aren’t already in place we will also remove any existing credentials file: 
 
 `rm -vf ${HOME}/.aws/credentials`
@@ -43,22 +43,22 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     * Confirm that **AdministratorAccess** is checked, then click **Next: Tags** to assign tags.
     * Take the defaults, and click **Next: Review** to review.
     * Enter **fargatedevlab****-admin** for the Name, and click** Create role**.
-    * [Image: image.png]
+    * ![fig4.png](fig4.png)
 * Attach the IAM role to your workspace
     * Go to the list of EC2 instances running in your account **Services →EC2 **
     * Select the Cloud9 instance, name would be something like “*aws-cloud9-EKS-Fargate-Dev-Lab-...*” , then choose **Actions / Instance Settings / Attach/Replace IAM Role**
-    * [Image: image.png]
+    * ![fig5.png](fig5.png)
     * Choose **fargatedevlab-admin** from the IAM Role drop down and select **Apply**
-    * [Image: image.png]
+    * ![fig6.png](fig6.png)
 * Installing the pre-reqs to launch the EKS cluster and setting the appropriate environment variables.
     * Install **kubectl**
 
-`sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl`
-`sudo chmod +x /usr/local/bin/kubectl`
+```sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
+sudo chmod +x /usr/local/bin/kubectl```
 
     * Update **awscli**. Upgrade AWS CLI according to guidance in [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html).
 
-`sudo pip install --upgrade awscli`
+```sudo pip install --upgrade awscli```
 
     * Install **jq**, **envsubst** (from GNU gettext utilities) and** bash-completion**
 
@@ -178,7 +178,8 @@ Even though we have created a “fp-default” farage profile, we’ll go and cr
 
 
 Now go to the console and you’ll see a new “**applications**” Fargate profile being created. Creation may take a few minutes or so.
-[Image: image.png]When your EKS cluster schedules pods on Fargate, the pods will need to make calls to AWS APIs on your behalf to do things like pull container images from Amazon ECR. The **Fargate Pod Execution Role **provides the IAM permissions to do this. T*his IAM role is automatically created for you by the above command.*
+![fig7.png](fig7.png)]
+When your EKS cluster schedules pods on Fargate, the pods will need to make calls to AWS APIs on your behalf to do things like pull container images from Amazon ECR. The **Fargate Pod Execution Role **provides the IAM permissions to do this. T*his IAM role is automatically created for you by the above command.*
 
 Creation of a Fargate profile can take up to several minutes. Execute the following command after the profile creation is completed and you should see output similar to what is shown below.
 
@@ -324,7 +325,7 @@ As you notice, now we see 4 nodes show up, 2 for the coredns pods and two for th
 
 Go to the AWS Console in the EC2 tab and you’ll still not see any nodes provisioned:
 
-[Image: image.png]
+![fig8.png](fig8.png)
 Shows the totally serverless nature of EKS Fargate  
 
 
