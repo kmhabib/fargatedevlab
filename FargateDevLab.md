@@ -1,3 +1,6 @@
+Disclaimer, please put this at the beginning of your lab
+This lab is provided as part of AWS Summit Online
+  ℹ️  You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 # EKS FARGATE DEV LAB
 
 
