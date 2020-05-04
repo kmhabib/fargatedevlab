@@ -53,33 +53,34 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     * **Navigate back to your Cloud9 IDE**. 
     
 * Installing the pre-reqs to launch the EKS cluster and setting the appropriate environment variables.
-    * Install **kubectl**
 
-    sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
-    sudo chmod +x /usr/local/bin/kubectl
+Install **kubectl**
+
+    ```sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
+    sudo chmod +x /usr/local/bin/kubectl```
 
 Update **awscli**. Upgrade AWS CLI according to guidance in [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html).
 
-`sudo pip install --upgrade awscli`
+    `sudo pip install --upgrade awscli`
 
 Install **jq**, **envsubst** (from GNU gettext utilities) and** bash-completion**
 
-`sudo yum -y install jq gettext`
+    `sudo yum -y install jq gettext`
 
 Verify the binaries are in the path and executable
 
-`for command in kubectl jq envsubst aws`
-`do which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"`
-`done`
+    for command in kubectl jq envsubst aws
+    do which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
+    done
 
 Set the default region
 
-`export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)`
-`export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')`
+    `export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)`
+    `export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')`
 
 Test if the desired region is set
 
-`test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set`
+    `test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set`
 
 Run this command to verify if AWS Fargate with Amazon EKS is available in the Region you choose to deploy your Amazon EKS cluster.
 
@@ -100,45 +101,46 @@ You can continue this lab.
 
 Lets save these into bash_profile
 
-`echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile`
-`echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile`
-`aws configure set default.region ${AWS_REGION}`
-`aws configure get default.region`
+    `echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile`
+    `echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile`
+    `aws configure set default.region ${AWS_REGION}`
+    `aws configure get default.region`
 
 Validate the IAM role
 
-`aws sts get-caller-identity --query Arn | grep fargatedevlab-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"`
+    `aws sts get-caller-identity --query Arn | grep fargatedevlab-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"`
 
 Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
 
-`ssh-keygen`
+    `ssh-keygen`
 
 Press `enter` 3 times to take the default choices. 
 upload the public key to your EC2 region:
 
-`aws ec2 import-key-pair --key-name "fargatedevlab" --public-key-material file://~/.ssh/id_rsa.pub`
+    `aws ec2 import-key-pair --key-name "fargatedevlab" --public-key-material file://~/.ssh/id_rsa.pub`
 
 [eksctl](https://eksctl.io/) is a tool jointly developed by AWS and [Weaveworks](https://weave.works/) that automates much of the experience of creating EKS clusters. Now we will install [**eksctl**](https://eksctl.io/) binary:
 
-`curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
+    `curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
 
-`sudo mv -v /tmp/eksctl /usr/local/bin`
+    `sudo mv -v /tmp/eksctl /usr/local/bin`
 
-`eksctl version`
+    `eksctl version`
 
 
 
 ### LAUNCH THE EKS FARGATE CLUSTER USING EKSCTL
 
-`eksctl create cluster --name=fargate-devlab --alb-ingress-access --region=${AWS_REGION} --fargate `
+    `eksctl create cluster --name=fargate-devlab --alb-ingress-access --region=${AWS_REGION} --fargate `
 
 **[Note: Spinning the cluster can take up to 15 minutes]**
 
 Go to the AWS console → Services → EKS and see the cluster that’s been created. You’ll see that there’s a Fargate profile created by default, since we used the “—fargate” flag when using eksctl. One more thing you’ll note is that there are no EC2 instances and that’s because again, we used the "fargate" flag when configuring the EKS cluster with eksctl.
-[Image: image.png]Now issue the kubectl get pods command:
+![fig6.png](fig6.png). 
+Now issue the kubectl get pods command:
 
-` kubectl get pods`
-`**No resources found**.`
+    `kubectl get pods`
+    `**No resources found**.`
 
 As expected, you won’t see any pods since we haven’t spun up anything. 
 
@@ -174,13 +176,15 @@ It is generally a good practice to deploy user application workloads into namesp
 
 Even though we have created a “fp-default” farage profile, we’ll go and create a new profile by the name “**applications**”. 
 
-`eksctl create fargateprofile --cluster fargate-devlab --name applications --namespace fargate`
+    `eksctl create fargateprofile --cluster fargate-devlab --name applications --namespace fargate`
 
 > Fargate profiles are immutable. However, you can create a new updated profile to replace an existing profile and then delete the original after the updated profile has finished creating
 
 
 Now go to the console and you’ll see a new “**applications**” Fargate profile being created. Creation may take a few minutes or so.
 ![fig7.png](fig7.png)]
+
+
 When your EKS cluster schedules pods on Fargate, the pods will need to make calls to AWS APIs on your behalf to do things like pull container images from Amazon ECR. The **Fargate Pod Execution Role **provides the IAM permissions to do this. T*his IAM role is automatically created for you by the above command.*
 
 Creation of a Fargate profile can take up to several minutes. Execute the following command after the profile creation is completed and you should see output similar to what is shown below.
@@ -278,9 +282,9 @@ spec:
 
 **Now apply this deployment:**
 
-`kubectl apply -f nginx-deployment.yaml`
+    `kubectl apply -f nginx-deployment.yaml`
 
-`kubectl get pods -n fargate -w`
+    `kubectl get pods -n fargate -w`
 (wait till the pods are in *Running* status)
 
 The first time the pods start, they do take some time due to the “cold start” of fargate pods. Once the pods are in “Ready” status, you can type “ctrl+c”.
@@ -299,16 +303,16 @@ If you were to do just ‘kubectl get pods’, you won’t see any pods show up 
 that’s only looking at pods in the default namespace. 
 ```
 
-```
-$ kubectl get service -n fargate -o wide
-NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR
-nginx-svc NodePort 10.100.33.138 <none> 80:30541/TCP 7m7s app=nginx
-```
+    ```
+    $ kubectl get service -n fargate -o wide
+    NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR
+    nginx-svc NodePort 10.100.33.138 <none> 80:30541/TCP 7m7s app=nginx
+    ```
 
 The deployment for ngnix we deployed creates a service of type NodePort. 
 **Now issue:**
 
-`kubectl get nodes`
+    `kubectl get nodes`
 
 What do you see? 
 
