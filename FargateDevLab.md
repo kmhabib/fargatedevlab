@@ -42,7 +42,7 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     * Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
     * Confirm that **AdministratorAccess** is checked, then click **Next: Tags** to assign tags.
     * Take the defaults, and click **Next: Review** to review.
-    * Enter **fargatedevlab****-admin** for the Name, and click** Create role**.
+    * Enter **fargatedevlab-admin** for the Name, and click **Create role**.
     ![fig4.png](fig4.png)
 * Attach the IAM role to your workspace
     * Go to the list of EC2 instances running in your account **Services →EC2 **
