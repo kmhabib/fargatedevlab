@@ -45,7 +45,7 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     * Enter **fargatedevlab-admin** for the Name, and click **Create role**.
     ![fig4.png](fig4.png)
 * Attach the IAM role to your workspace
-    * Go to the list of EC2 instances running in your account **Services →EC2 **
+    * Go to the list of EC2 instances running in your account **Services→EC2**
     * Select the Cloud9 instance, name would be something like “*aws-cloud9-EKS-Fargate-Dev-Lab-...*” , then choose **Actions / Instance Settings / Attach/Replace IAM Role**
     ![fig5.png](fig5.png)
     * Choose **fargatedevlab-admin** from the IAM Role drop down and select **Apply**
