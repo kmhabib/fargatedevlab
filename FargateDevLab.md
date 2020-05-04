@@ -1,4 +1,4 @@
-Disclaimer:
+**Disclaimer**:
 This lab is provided as part of AWS Summit Online. 
   ℹ️  You will run this lab in your **own** AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 # EKS FARGATE DEV LAB
@@ -53,33 +53,33 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
 * Installing the pre-reqs to launch the EKS cluster and setting the appropriate environment variables.
     * Install **kubectl**
 
-```sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
-sudo chmod +x /usr/local/bin/kubectl```
+    sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
+    sudo chmod +x /usr/local/bin/kubectl
 
-    * Update **awscli**. Upgrade AWS CLI according to guidance in [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html).
+Update **awscli**. Upgrade AWS CLI according to guidance in [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html).
 
-```sudo pip install --upgrade awscli```
+`sudo pip install --upgrade awscli`
 
-    * Install **jq**, **envsubst** (from GNU gettext utilities) and** bash-completion**
+Install **jq**, **envsubst** (from GNU gettext utilities) and** bash-completion**
 
 `sudo yum -y install jq gettext`
 
-    * Verify the binaries are in the path and executable
+Verify the binaries are in the path and executable
 
 `for command in kubectl jq envsubst aws`
 `do which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"`
 `done`
 
-    * Set the default region
+Set the default region
 
 `export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)`
 `export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')`
 
-    * Test if the desired region is set
+Test if the desired region is set
 
 `test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set`
 
-    * Run this command to verify if AWS Fargate with Amazon EKS is available in the Region you choose to deploy your Amazon EKS cluster.
+Run this command to verify if AWS Fargate with Amazon EKS is available in the Region you choose to deploy your Amazon EKS cluster.
 
 ```
 if [ $AWS_REGION = "us-east-1" ] || [ $AWS_REGION = "us-east-2" ] || [ $AWS_REGION = "ap-northeast-1" ] || [ $AWS_REGION = "eu-west-1" ] || [ $AWS_REGION = "ap-southeast-2"] ; then
@@ -96,27 +96,27 @@ You should see the response:
 AWS Fargate with Amazon EKS is available in your Region.
 You can continue this lab.
 
-    * Lets save these into bash_profile
+Lets save these into bash_profile
 
 `echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile`
 `echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile`
 `aws configure set default.region ${AWS_REGION}`
 `aws configure get default.region`
 
-    * Validate the IAM role
+Validate the IAM role
 
 `aws sts get-caller-identity --query Arn | grep fargatedevlab-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"`
 
-    * Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
+Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
 
 `ssh-keygen`
 
-        * Press `enter` 3 times to take the default choices
-    * upload the public key to your EC2 region:
+Press `enter` 3 times to take the default choices. 
+upload the public key to your EC2 region:
 
 `aws ec2 import-key-pair --key-name "fargatedevlab" --public-key-material file://~/.ssh/id_rsa.pub`
 
-    * [eksctl](https://eksctl.io/) is a tool jointly developed by AWS and [Weaveworks](https://weave.works/) that automates much of the experience of creating EKS clusters. Now we will install [**eksctl**](https://eksctl.io/) binary:
+[eksctl](https://eksctl.io/) is a tool jointly developed by AWS and [Weaveworks](https://weave.works/) that automates much of the experience of creating EKS clusters. Now we will install [**eksctl**](https://eksctl.io/) binary:
 
 `curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
 
