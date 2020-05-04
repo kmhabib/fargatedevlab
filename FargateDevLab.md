@@ -1,6 +1,6 @@
-Disclaimer, please put this at the beginning of your lab
-This lab is provided as part of AWS Summit Online
-  ℹ️  You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
+Disclaimer:
+This lab is provided as part of AWS Summit Online. 
+  ℹ️  You will run this lab in your **own** AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 # EKS FARGATE DEV LAB
 
 
@@ -10,7 +10,9 @@ This lab is provided as part of AWS Summit Online
 
 [AWS Fargate](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) is a technology that provides on-demand, right-sized compute capacity for containers. With AWS Fargate, you no longer have to provision, configure, or scale groups of virtual machines to run containers. This removes the need to choose server types, decide when to scale your node groups, or optimize cluster packing. You can control which pods start on Fargate and how they run with [Fargate profiles](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html), which are defined as part of your Amazon EKS cluster.
 
-In this lab, we will deploy a replica set of NGINX pods on EKS Fargate and expose them to the Internet using an Elastic Load balancer.
+In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
+
+![fig1.png](fig1.png)
 
 ### Setup Cloud 9 for eks cluster launch:
 
