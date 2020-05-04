@@ -50,6 +50,8 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     ![fig5.png](fig5.png)
     * Choose **fargatedevlab-admin** from the IAM Role drop down and select **Apply**
     ![fig6.png](fig6.png)
+    * **Navigate back to your Cloud9 IDE**. 
+    
 * Installing the pre-reqs to launch the EKS cluster and setting the appropriate environment variables.
     * Install **kubectl**
 
