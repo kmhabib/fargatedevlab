@@ -4,7 +4,7 @@ This lab is provided as part of AWS Summit Online
 # EKS FARGATE DEV LAB
 
 
-**Time**: ~ 1 hour
+**Time**: ~ 1 hour.  
 **Mandatory Requirement**: AWS Account with Admin access
 
 
