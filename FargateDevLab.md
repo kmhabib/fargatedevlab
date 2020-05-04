@@ -25,14 +25,14 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
 * Leave everything default and press “**Next Step**”
 * Click on “**Create Environment**”
 * Once Cloud9 has spun up you can close the welcome window and other terminal windows you see in the pane and launch a new terminal by going to **Window** → **New Terminal**
-* ![fig2.png](fig2.png)
+![fig2.png](fig2.png)
 * *Note: If you like this theme, you can choose it yourself by selecting View / Themes / Solarized / Solarized Dark in the Cloud9 workspace menu.*
 * Next, we’ll be turning off temporary AWS credentials because we don’t want to use the Cloud9 credentials to launch the EKS Fargate cluster. We’ll be using an “admin” role assigned to the Cloud9 EC2 instances to configure the cluster.
     * click the gear icon (in top right corner), or click to open a new tab and choose “Open Preferences”
     * Select **AWS SETTINGS**
     * Turn off **AWS managed temporary credentials**
     * Close the **Preferences** tab
-    * ![fig3.png](fig3.png)
+    ![fig3.png](fig3.png)
     * To ensure temporary credentials aren’t already in place we will also remove any existing credentials file: 
 
 `rm -vf ${HOME}/.aws/credentials`
@@ -43,13 +43,13 @@ In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
     * Confirm that **AdministratorAccess** is checked, then click **Next: Tags** to assign tags.
     * Take the defaults, and click **Next: Review** to review.
     * Enter **fargatedevlab****-admin** for the Name, and click** Create role**.
-    * ![fig4.png](fig4.png)
+    ![fig4.png](fig4.png)
 * Attach the IAM role to your workspace
     * Go to the list of EC2 instances running in your account **Services →EC2 **
     * Select the Cloud9 instance, name would be something like “*aws-cloud9-EKS-Fargate-Dev-Lab-...*” , then choose **Actions / Instance Settings / Attach/Replace IAM Role**
-    * ![fig5.png](fig5.png)
+    ![fig5.png](fig5.png)
     * Choose **fargatedevlab-admin** from the IAM Role drop down and select **Apply**
-    * ![fig6.png](fig6.png)
+    ![fig6.png](fig6.png)
 * Installing the pre-reqs to launch the EKS cluster and setting the appropriate environment variables.
     * Install **kubectl**
 
