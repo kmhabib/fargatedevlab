@@ -9,7 +9,7 @@ This lab is provided as part of AWS Summit Online.
 
 
 [AWS Fargate](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html) is a technology that provides on-demand, right-sized compute capacity for containers. With AWS Fargate, you no longer have to provision, configure, or scale groups of virtual machines to run containers. This removes the need to choose server types, decide when to scale your node groups, or optimize cluster packing. You can control which pods start on Fargate and how they run with [Fargate profiles](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html), which are defined as part of your Amazon EKS cluster.
-
+1
 In this lab, we will deploy a replica set of NGINX pods on EKS Fargate.
 
 ![fig1.png](fig1.png)
@@ -342,12 +342,13 @@ Now lets do a curl on the service by going into one of the pods and ensure we ca
 `NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR`
 `nginx-svc NodePort 10.100.1.116 <none> 80:31237/TCP 93s app=nginx`
 
+Make sure you note down the IP Address of the NodePort. 
 
 ```
 $ kubectl get pods -n fargate
 ```
 
-Note down the name of one of the fargate pods. In my case, it was “*nginx-app-57d5474b4b-cjbmq*”. Yours will be different. 
+Note down the name of one of the fargate pods. In my case, it was **nginx-app-57d5474b4b-cjbmq**. Yours will be different. 
 
 `kubectl exec -it nginx-app-57d5474b4b-cjbmq -n fargate — /bin/bash`
 
