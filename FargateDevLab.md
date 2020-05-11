@@ -1,5 +1,6 @@
-This lab is provided as part of [AWS Summit Online](https://aws.amazon.com/events/summits/online/).  
-ℹ️ You will run this lab in your **own** AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
+This lab is provided as part of **[AWS Summit Online](https://aws.amazon.com/events/summits/online/)**, click [here](https://bit.ly/2yLtZqL) to explore the full list of hands-on labs.
+
+ℹ️ You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 
 
 # EKS FARGATE DEV LAB
@@ -350,7 +351,7 @@ $ kubectl get pods -n fargate
 
 Note down the name of one of the fargate pods. In my case, it was **nginx-app-57d5474b4b-cjbmq**. Yours will be different. 
 
-`kubectl exec -it <YOUR-NGINX-POD-NAME> -n fargate — /bin/bash`
+`kubectl exec -it <YOUR-NGINX-POD-NAME> -n fargate  /bin/bash`
 
 This should get you directly inside the pod, your prompt should change to something like: **root@nginx-app-XXXX**
 
@@ -412,7 +413,7 @@ Please follow these steps in order to ensure all your resources used are deleted
 
 * DELETE THE EKS CLUSTER: Issue the following command from Cloud9 IDE:
 
-`eksctl delete cluster —name=fargate-devlab`
+`eksctl delete cluster fargate-devlab`
 
 * DELETE THE CLOUD9 IDE: 
     * Go to **Services →  CloudFormation → Stacks** and delete the stack created by **cloud9** beginning with “aws-cloud9-EKS-Fargate-DevLab-...”delete keypair
