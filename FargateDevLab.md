@@ -173,9 +173,9 @@ kube-system coredns-7dc94799cb-h2z2t 1/1 Running 0 3h21m
 
 The [Fargate profile](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html) allows an administrator to declare which pods run on Fargate. Each profile can have up to five selectors that contain a namespace and optional labels. You must define a namespace for every selector. The label field consists of multiple optional key-value pairs. Pods that match a selector (by matching a namespace for the selector and all of the labels specified in the selector) are scheduled on Fargate.
 
-It is generally a good practice to deploy user application workloads into namespaces other than kube-system or default so that you have more fine-grained capabilities to manage the interaction between your pods deployed on to EKS. You will now create a new Fargate profile named applications that targets all pods destined for the fargate namespace.
+It is generally a good practice to deploy user application workloads into namespaces other than kube-system or default so that you have more fine-grained capabilities to manage the interaction between your pods deployed on to EKS. You will now create a new Fargate profile named applications that targets all pods destined for the `fargate` namespace.
 
-Even though we have created a “fp-default” farage profile, we’ll go and create a new profile by the name “**applications**”. 
+Even though we have created a “fp-default” Fargate profile, we’ll go and create a new profile by the name “**applications**”. 
 
     eksctl create fargateprofile --cluster fargate-devlab --name applications --namespace fargate
 
@@ -186,7 +186,7 @@ Now go to the console and you’ll see a new “**applications**” Fargate prof
 ![fig7.png](fig7.png)]
 
 
-When your EKS cluster schedules pods on Fargate, the pods will need to make calls to AWS APIs on your behalf to do things like pull container images from Amazon ECR. The **Fargate Pod Execution Role **provides the IAM permissions to do this. T*his IAM role is automatically created for you by the above command.*
+When your EKS cluster schedules pods on Fargate, the pods will need to make calls to AWS APIs on your behalf to do things like pull container images from Amazon ECR. The **Fargate Pod Execution Role** provides the IAM permissions to do this. *This IAM role is automatically created for you by the above command.*
 
 Creation of a Fargate profile can take up to several minutes. Execute the following command after the profile creation is completed and you should see output similar to what is shown below.
 
@@ -292,7 +292,7 @@ The first time the pods start, they do take some time due to the “cold start�
 
 
 ```
-[ec2-user@ip-172-31-21-122 fargate]$ kubectl get pods -n fargate
+$ kubectl get pods -n fargate
 NAME READY STATUS RESTARTS AGE
 nginx-app-57d5474b4b-cjbmq 1/1 Running 0 88s
 nginx-app-57d5474b4b-sf6w7 1/1 Running 0 88s
@@ -319,7 +319,7 @@ What do you see?
 
 
 ```
-[ec2-user@ip-172-31-21-122 fargate]$ kubectl get nodes
+$ kubectl get nodes
 NAME                                     STATUS   ROLES    AGE    VERSION
 fargate-ip-192-168-77-249.ec2.internal   Ready    <none>   101s   v1.14.8-eks
 fargate-ip-192-168-79-85.ec2.internal    Ready    <none>   83s    v1.14.8-eks
@@ -338,10 +338,11 @@ Shows the totally serverless nature of EKS Fargate
 
 Now lets do a curl on the service by going into one of the pods and ensure we can hit the service from the pods. Here are the service details:
 
-
-`Admin:~/environment/fargate $ kubectl get service -n fargate -o wide`
-`NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR`
-`nginx-svc NodePort 10.100.1.116 <none> 80:31237/TCP 93s app=nginx`
+```
+$ kubectl get service -n fargate -o wide
+NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR
+nginx-svc NodePort 10.100.1.116 <none> 80:31237/TCP 93s app=nginx
+```
 
 Make sure you note down the **IP Address** of the NodePort. 
 
@@ -358,20 +359,25 @@ This should get you directly inside the pod, your prompt should change to someth
 
 Note down the IP of the service that we issued in the command above.. In our case, it is 10.100.1.116. We’ll curl on this IP:
 
-`root@nginx-app-57d5474b4b-vcnnk:/# curl 10.100.1.116`
-`bash: curl: command not found`
+```
+root@nginx-app-57d5474b4b-vcnnk:/# curl 10.100.1.116
+bash: curl: command not found
+```
 
-You’ll realise that the curl utility is not available on this pod. So we’ll need to download and install it. Issue the following commands:
+You’ll realize that the curl utility is not available on this pod. So we’ll need to download and install it. Issue the following commands:
 
-`$ apt-get update`  
-`$ apt-get install curl`  
+```
+root@nginx-app-57d5474b4b-vcnnk:/# apt-get update
+root@nginx-app-57d5474b4b-vcnnk:/# apt-get install curl
+```
+
 Answer “Y” to any question asked
 
 Now issue the curl on the service and you’ll see the nginx page show up. 
 
 
-```
-root@nginx-app-57d5474b4b-vcnnk:/# curl  10.100.1.116                                                                                                          
+```bash
+root@nginx-app-57d5474b4b-vcnnk:/# curl 10.100.1.116                                                                                                          
 <!DOCTYPE html>
 <html>
 <head>
