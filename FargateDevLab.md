@@ -221,7 +221,7 @@ Now, you will deploy the NGINX pods into Fargate by executing the following comm
 ```
 mkdir -p ~/environment/fargate
 cd ~/environment/fargate
-wget https://eksworkshop.com/beginner/180_fargate/fargate.files/nginx-deployment.yaml
+wget https://k8s.io/examples/controllers/nginx-deployment.yaml
 ```
 
 
